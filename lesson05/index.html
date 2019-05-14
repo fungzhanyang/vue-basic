@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <table>
+        <tr is="row"></tr>
+      </table>
+    </div>
+    <script>
+      Vue.component("row", {
+        data() {
+          return {
+            content: "this is content"
+          };
+        },
+        template: "<tr><td>{{content}}</td></tr>"
+      });
+      var vm = new Vue({
+        el: "#app",
+        data: {}
+      });
+    </script>
+
+    <div id="app2">
+      <div ref="el1" @click="handleClick">Click Me</div>
+    </div>
+    <script>
+      var vm2 = new Vue({
+        el: "#app2",
+        methods: {
+          handleClick: function() {
+            console.log(this.$refs.el1);
+          }
+        }
+      });
+    </script>
+
+    <div id="app3">
+      <counter ref="one" @change="handleChange"></counter>
+      <counter ref="two" @change="handleChange"></counter>
+      <div>total clikced {{ total }} times</div>
+    </div>
+    <script>
+      Vue.component("counter", {
+        template: '<div @click="handleClick">{{number}}</div>',
+        data() {
+          return {
+            number: 0
+          };
+        },
+        methods: {
+          handleClick: function() {
+            this.number++;
+            this.$emit("change", this.number);
+          }
+        }
+      });
+      var vm3 = new Vue({
+        el: "#app3",
+        data: {
+          total: 0
+        },
+        methods: {
+          handleChange: function(n) {
+            console.log('component one clicked '+this.$refs.one.number+' times');
+            console.log('component two clicked '+this.$refs.two.number+' times');
+            this.total=this.$refs.one.number+this.$refs.two.number
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

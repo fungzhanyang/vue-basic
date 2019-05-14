@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <!-- 父子组件传值 -->
+        <div id="app">
+            <counter :count="0" @add="handleChange"></counter>
+            <counter :count="0" @add="handleChange"></counter>
+            <div>total {{ total }}</div>
+        </div>
+        <script>
+            var counter = {
+                props: ["count"], //父传子
+                data: function() {
+                    return {
+                        number: this.count
+                    };
+                },
+                template: '<div @click="handleClick">{{number}}</div>',
+                methods: {
+                    handleClick: function() {
+                        this.number++;
+                        this.$emit("add", 1); //子传父
+                    }
+                }
+            };
+            var vm = new Vue({
+                el: "#app",
+                components: {
+                    counter: counter
+                },
+                data: {
+                    total: 0
+                },
+                methods: {
+                    handleChange: function(step) {
+                        this.total += step;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
