@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>动态组件与v-once指令</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <!-- <child-one v-if="type === 'child-one'"> </child-one>
+            <child-two v-if="type === 'child-two'"> </child-two> -->
+            <!-- 动态组件 -->
+            <component :is="type"></component>
+            <button @click="handleClick">Toggle</button>
+        </div>
+        <script>
+            Vue.component("ChildOne", {
+                template: `<div v-once>
+                                childOne
+                           </div>`
+            });
+            Vue.component("ChildTwo", {
+                template: `<div v-once>
+                                childTwo
+                           </div>`
+            });
+            var vm = new Vue({
+                el: "#app",
+                data: {
+                    type: "child-one"
+                },
+                methods: {
+                    handleClick: function() {
+                        this.type =
+                            this.type === "child-one"
+                                ? "child-two"
+                                : "child-one";
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
